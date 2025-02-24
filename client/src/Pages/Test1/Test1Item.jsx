@@ -1,5 +1,3 @@
-import PropTypes from 'prop-types';
-
 
 const Test1Item = ({ item }) => {
     const { id, name, category } = item;
