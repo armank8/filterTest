@@ -1,11 +1,10 @@
 import './App.css'
-
 function App() {
 
   return (
     <div>
-      <h3 className='text-3xl'>hello</h3>
-      <button className="btn btn-primary">Primary</button>
+      <h2 className='text-2xl'>hello</h2>
+      <button className="btn btn-success">Success</button>
     </div>
   )
 }
