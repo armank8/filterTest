@@ -1,14 +1,37 @@
-import { useState } from "react"
+import { useMemo, useState } from "react"
 import { items } from "./items";
 import Test1Item from "./Test1Item";
 
 const Test1 = () => {
     const [filter, setFilter] = useState({
-        search: "n",
+        search: "",
         category: "all",
         sort: "none"
     });
     console.log(filter);
+
+    const filteredItems = useMemo(() => {
+        return items.filter((item) => {
+            if (filter.search) {
+                return item.name.toLowerCase().includes(filter.search.toLowerCase())
+            }
+            return true;
+        }).filter((item) => {
+            if (filter.category !== "all") {
+                return item.category === filter.category;
+            };
+            return true;
+        }).sort((a, b) => {
+            if (filter.sort === 'asc') {
+                return a.name.localeCompare(b.name);
+            } else if (filter.sort === 'desc') {
+                return b.name.localeCompare(a.name);
+            }
+            return 0;
+        })
+    }, [filter])
+
+
 
     return (
         <div>
@@ -20,7 +43,7 @@ const Test1 = () => {
                 {/* Category Dropdown */}
                 <select value={filter.category} className="select focus:outline-none mr-3"
                     onChange={(e) => setFilter({ ...filter, category: e.target.value })}>
-                    <option disabled={true} value="all">All</option>
+                    <option value="all">All</option>
                     <option value="frontend">frontend</option>
                     <option value="backend">backend</option>
                 </select>
@@ -28,9 +51,9 @@ const Test1 = () => {
                 {/* Sorting Dropdown */}
                 <select value={filter.sort} className="select focus:outline-none mr-3"
                     onChange={(e) => setFilter({ ...filter, sort: e.target.value })}>
-                    <option disabled={true} value="none">None</option>
-                    <option value="ascending">Ascending</option>
-                    <option value="descending">Descending</option>
+                    <option value="none">None</option>
+                    <option value="asc">Ascending</option>
+                    <option value="desc">Descending</option>
                 </select>
             </div>
 
@@ -38,7 +61,7 @@ const Test1 = () => {
             <h3 className="font-bold text-2xl">Filtered Results</h3>
             <div className="grid grid-cols-3 gap-5 py-5">
                 {
-                    items.map((item) => (
+                    filteredItems.map((item) => (
                         <Test1Item key={item.id} item={item}></Test1Item>
                     ))
                 }

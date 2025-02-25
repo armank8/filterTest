@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 
 const Test1Item = ({ item }) => {
     const { id, name, category } = item;
