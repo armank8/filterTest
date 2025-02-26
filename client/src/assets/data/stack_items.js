@@ -1,4 +1,4 @@
-export const items = [
+export const stack_items = [
     { id: 1, name: "React", category: "frontend" },
     { id: 2, name: "MySql", category: "backend" },
     { id: 3, name: "Redux", category: "frontend" },

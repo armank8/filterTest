@@ -1,7 +1,6 @@
-import { useMemo, useReducer } from "react"
+import { useMemo, useReducer } from "react";
 import useDebounce from "../../hooks/useDebounce";
 import { stack_items } from "../../assets/data/stack_items";
-
 
 const initialState = {
     search: "",
@@ -24,10 +23,7 @@ const filterReducer = (state, action) => {
             return state;
     }
 };
-
-
-
-const BackendFilter = () => {
+const Test2 = () => {
     const [filter, dispatch] = useReducer(filterReducer, initialState);
 
     // debounced search input
@@ -52,8 +48,7 @@ const BackendFilter = () => {
             }
             return 0;
         })
-    }, [debouncedSearch, filter.category, filter.sort])
-
+    }, [debouncedSearch, filter.category, filter.sort]);
 
     return (
         <div>
@@ -94,4 +89,4 @@ const BackendFilter = () => {
     )
 }
 
-export default BackendFilter
+export default Test2

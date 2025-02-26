@@ -1,6 +1,7 @@
 import { useMemo, useState } from "react"
-import { items } from "./items";
+
 import Test1Item from "./Test1Item";
+import { stack_items } from "../../assets/data/stack_items";
 
 const Test1 = () => {
     const [filter, setFilter] = useState({
@@ -11,7 +12,7 @@ const Test1 = () => {
     console.log(filter);
 
     const filteredItems = useMemo(() => {
-        return items.filter((item) => {
+        return stack_items.filter((item) => {
             if (filter.search) {
                 return item.name.toLowerCase().includes(filter.search.toLowerCase())
             }
