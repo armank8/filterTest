@@ -24,6 +24,26 @@ async function run() {
   try {
     // Connect the client to the server	(optional starting in v4.7)
     await client.connect();
+
+    const stacksCollection = client.db("filterTest").collection("stack_items");
+
+    app.get('/api/items',async(req,res)=>{
+      const {search,category,sort} =req.query;
+      let query={};
+
+      if(search){
+        query.name = { $regex: search, $options: "i"}
+      }
+      if(category && category!== "all"){
+        query.category = category;
+      }
+
+      const result = await stacksCollection.find(query).sort({name: 1}).toArray();
+      res.send(result);
+    })
+
+
+
     // Send a ping to confirm a successful connection
     await client.db("admin").command({ ping: 1 });
     console.log("Pinged your deployment. You successfully connected to MongoDB!");

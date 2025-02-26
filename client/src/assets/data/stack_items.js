@@ -10,3 +10,16 @@ export const stack_items = [
     { id: 9, name: "CSS", category: "frontend" },
     { id: 10, name: "MongoDB", category: "backend" },
   ];
+
+  export const db=[
+      { name: "React", category: "frontend", type:"full-time", location:"onsite" },
+      { name: "MySql", category: "backend", type:"part-time", location:"remote" },
+      { name: "Redux", category: "frontend", type:"full-time", location:"onsite" },
+      { name: "Express.js", category: "backend", type:"full-time", location:"remote" },
+      { name: "Tailwind CSS", category: "frontend", type:"part-time", location:"remote" },
+      { name: "Node.js", category: "backend", type:"full-time", location:"remote" },
+      { name: "Next.js", category: "frontend", type:"full-time", location:"remote" },
+      { name: "Rest Api", category: "backend", type:"part-time", location:"onsite" },
+      { name: "CSS", category: "frontend", type:"full-time", location:"remote" },
+      { name: "MongoDB", category: "backend", type:"part-time", location:"onsite" }
+  ]
