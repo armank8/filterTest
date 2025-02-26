@@ -1,6 +1,5 @@
 import { useMemo, useReducer } from "react"
 import { items } from "../Test1/items";
-import Test1Item from "../Test1/Test1Item";
 import useDebounce from "../../hooks/useDebounce";
 
 
@@ -83,13 +82,14 @@ const BackendFilter = () => {
 
             {/* Filtered Results */}
             <h3 className="font-bold text-2xl">Filtered Results</h3>
-            <div className="grid grid-cols-3 gap-5 py-5">
+            <ul className="grid grid-cols-3 gap-5 py-5">
                 {
                     filteredItems.map((item) => (
-                        <Test1Item key={item.id} item={item}></Test1Item>
+                        <li key={item.id} className="p-5 bg-slate-100 rounded-md"
+                        >{item.id} {item.name} <br></br> {item.category}</li>
                     ))
                 }
-            </div>
+            </ul>
         </div >
     )
 }
