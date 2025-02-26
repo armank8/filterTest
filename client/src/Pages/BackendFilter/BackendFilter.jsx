@@ -1,6 +1,7 @@
 import { useMemo, useReducer } from "react"
 import { items } from "../Test1/items";
 import Test1Item from "../Test1/Test1Item";
+import useDebounce from "../../hooks/useDebounce";
 
 
 const initialState = {
@@ -30,10 +31,13 @@ const filterReducer = (state, action) => {
 const BackendFilter = () => {
     const [filter, dispatch] = useReducer(filterReducer, initialState);
 
+    // debounced search input
+    const debouncedSearch = useDebounce(filter.search, 500);
+
     const filteredItems = useMemo(() => {
         return items.filter((item) => {
-            if (filter.search) {
-                return item.name.toLowerCase().includes(filter.search.toLowerCase())
+            if (debouncedSearch) {
+                return item.name.toLowerCase().includes(debouncedSearch.toLowerCase())
             }
             return true;
         }).filter((item) => {
@@ -49,7 +53,7 @@ const BackendFilter = () => {
             }
             return 0;
         })
-    }, [filter])
+    }, [debouncedSearch, filter.category, filter.sort])
 
 
     return (
