@@ -3,6 +3,7 @@ import Main from "../layout/Main";
 import Home from "../Pages/Home/Home";
 import Jobs from "../Pages/Jobs/Jobs";
 import Test1 from "../Pages/Test1/Test1";
+import BackendFilter from "../Pages/BackendFilter/BackendFilter";
 
 const router = createBrowserRouter([
     {
@@ -16,6 +17,10 @@ const router = createBrowserRouter([
             {
                 path: '/test1',
                 element: <Test1></Test1>,
+            },
+            {
+                path: '/backendFilter',
+                element: <BackendFilter></BackendFilter>,
             },
             {
                 path: '/jobs',
