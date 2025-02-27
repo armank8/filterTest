@@ -30,6 +30,7 @@ async function run() {
     app.get('/api/items',async(req,res)=>{
       const {search,category,sort} =req.query;
       let query={};
+      let sortOption={};
 
       if(search){
         query.name = { $regex: search, $options: "i"}
@@ -37,8 +38,13 @@ async function run() {
       if(category && category!== "all"){
         query.category = category;
       }
+      if(sort ==="asc"){
+        sortOption.name = 1;
+      }else if (sort ==='desc'){
+        sortOption.name = -1;
+      }
 
-      const result = await stacksCollection.find(query).sort({name: 1}).toArray();
+      const result = await stacksCollection.find(query).sort(sortOption).toArray();
       res.send(result);
     })
 

@@ -1,8 +1,9 @@
-import { useReducer, useState } from "react"
+import { useReducer } from "react"
 import useDebounce from "../../hooks/useDebounce";
 // import { stack_items } from "../../assets/data/stack_items";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
+import Loading from "../../Shared/Loading/LOading";
 
 
 const initialState = {
@@ -36,14 +37,22 @@ const BackendFilter = () => {
     // debounced search input
     const debouncedSearch = useDebounce(filter.search, 500);
 
-    const { data: items = [] } = useQuery({
-        queryKey: ['items'],
+    const { data: items = [], isLoading, error } = useQuery({
+        queryKey: ['items', { search: debouncedSearch, category: filter.category, sort: filter.sort }],
         queryFn: async () => {
-            const res = await axios.get("http://localhost:5011/api/items");
+            const query = new URLSearchParams({
+                search: debouncedSearch,
+                category: filter.category,
+                sort: filter.sort
+            })
+            const res = await axios.get(`http://localhost:5011/api/items?${query}`);
             return res.data;
-        }
+        },
+        keepPreviousData: true,
+        staleTime: 1000 * 60 * 5
     });
 
+    console.log(filter);
     console.log(items);
 
 
@@ -95,16 +104,20 @@ const BackendFilter = () => {
                 </select>
             </div>
 
+            {/* Loading & Error Handling */}
+            {isLoading && <Loading></Loading>}
+            {error && <p>Error fetching data </p>}
+
             {/* Filtered Results */}
             <h3 className="font-bold text-2xl">Filtered Results</h3>
-            {/* <ul className="grid grid-cols-3 gap-5 py-5">
+            <ul className="grid grid-cols-3 gap-5 py-5">
                 {
-                    filteredItems.map((item) => (
-                        <li key={item.id} className="p-5 bg-slate-100 rounded-md"
+                    items.map((item) => (
+                        <li key={item._id} className="p-5 bg-slate-100 rounded-md"
                         >{item.id} {item.name} <br></br> {item.category}</li>
                     ))
                 }
-            </ul> */}
+            </ul>
         </div >
     )
 }
