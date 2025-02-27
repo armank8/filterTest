@@ -1,6 +1,8 @@
-import { useMemo, useReducer } from "react"
+import { useReducer, useState } from "react"
 import useDebounce from "../../hooks/useDebounce";
-import { stack_items } from "../../assets/data/stack_items";
+// import { stack_items } from "../../assets/data/stack_items";
+import { useQuery } from "@tanstack/react-query";
+import axios from "axios";
 
 
 const initialState = {
@@ -29,30 +31,43 @@ const filterReducer = (state, action) => {
 
 const BackendFilter = () => {
     const [filter, dispatch] = useReducer(filterReducer, initialState);
+    // const [items, setItems] = useState([]);
 
     // debounced search input
     const debouncedSearch = useDebounce(filter.search, 500);
 
-    const filteredItems = useMemo(() => {
-        return stack_items.filter((item) => {
-            if (debouncedSearch) {
-                return item.name.toLowerCase().includes(debouncedSearch.toLowerCase())
-            }
-            return true;
-        }).filter((item) => {
-            if (filter.category !== "all") {
-                return item.category === filter.category;
-            };
-            return true;
-        }).sort((a, b) => {
-            if (filter.sort === 'asc') {
-                return a.name.localeCompare(b.name);
-            } else if (filter.sort === 'desc') {
-                return b.name.localeCompare(a.name);
-            }
-            return 0;
-        })
-    }, [debouncedSearch, filter.category, filter.sort])
+    const { data: items = [] } = useQuery({
+        queryKey: ['items'],
+        queryFn: async () => {
+            const res = await axios.get("http://localhost:5011/api/items");
+            return res.data;
+        }
+    });
+
+    console.log(items);
+
+
+    // Frontend filter code with useMemo
+    // const filteredItems = useMemo(() => {
+    //     return stack_items.filter((item) => {
+    //         if (debouncedSearch) {
+    //             return item.name.toLowerCase().includes(debouncedSearch.toLowerCase())
+    //         }
+    //         return true;
+    //     }).filter((item) => {
+    //         if (filter.category !== "all") {
+    //             return item.category === filter.category;
+    //         };
+    //         return true;
+    //     }).sort((a, b) => {
+    //         if (filter.sort === 'asc') {
+    //             return a.name.localeCompare(b.name);
+    //         } else if (filter.sort === 'desc') {
+    //             return b.name.localeCompare(a.name);
+    //         }
+    //         return 0;
+    //     })
+    // }, [debouncedSearch, filter.category, filter.sort])
 
 
     return (
@@ -82,14 +97,14 @@ const BackendFilter = () => {
 
             {/* Filtered Results */}
             <h3 className="font-bold text-2xl">Filtered Results</h3>
-            <ul className="grid grid-cols-3 gap-5 py-5">
+            {/* <ul className="grid grid-cols-3 gap-5 py-5">
                 {
                     filteredItems.map((item) => (
                         <li key={item.id} className="p-5 bg-slate-100 rounded-md"
                         >{item.id} {item.name} <br></br> {item.category}</li>
                     ))
                 }
-            </ul>
+            </ul> */}
         </div >
     )
 }
